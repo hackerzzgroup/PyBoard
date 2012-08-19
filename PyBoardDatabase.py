@@ -50,7 +50,7 @@ class Global(object):
                 return
             else:
                 self.users.add(u, p, ["__root__"])
-                self.instance.log("There. I've added you to the user list. You may now log in at /admin?login.", 52346)
+                self.instance.log("User created. You may now log in at /admin.", 52346)
 
     def get_boards(self):
         b = {}

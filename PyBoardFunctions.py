@@ -101,30 +101,28 @@ class Functions(object):
 
     def firstRun(self):
         self.instance.log("Looks like this is your first time running PyBoard.", 52346)
-        self.instance.log("Would you like me to create a root user for you? [Y/n]", 52346)
+        self.instance.log("Would you like to create a new root user? [Y/n]", 52346)
         res = raw_input(">>> ")
         if not res.lower().startswith("y"):
-            self.instance.log("I see. Good luck.", 52346)
+            self.instance.log("Okay.", 52346)
             return (None, None)
-        self.instance.log("I see. What is your name, Anonymous? [root]", 52346)
+        self.instance.log("Pick a username. [root]", 52346)
         uname = raw_input(">>> ").strip() or "root"
-        self.instance.log("Okay, I shall call you {0}.".format(uname), 52346)
         password = None
         while not password:
-            self.instance.log("What would you like your password to be, {0}?".format(uname), 52346)
-            self.instance.log("I won't tell anyone, promise!", 52346)
+            self.instance.log("Please pick a password for {0}.".format(uname), 52346)
             _pass = __import__("getpass").getpass(">>> ").strip()
             if len(_pass) > 4:
-                self.instance.log("Just to be sure... could you type that again?", 52346)
+                self.instance.log("Retype the password to confirm.", 52346)
                 _pass2 = __import__("getpass").getpass(">>> ").strip()
                 if _pass == _pass2:
                     password = _pass
                     break
                 else:
-                    self.instance.log("Have you forgotten your password already, {0}?".format(uname), 52346)
+                    self.instance.log("Passwords did not match.".format(uname), 52346)
             else:
-                self.instance.log("You know better than that, {0}! Your password is too short...".format(uname), 52346)
-        self.instance.log("Alright! That's all I need to know.", 52346)
+                self.instance.log("Password is too short.".format(uname), 52346)
+        self.instance.log("Creating user...", 52346)
         return (uname, password)
 
     def generateForm(self, board, thread=0, mod=None):

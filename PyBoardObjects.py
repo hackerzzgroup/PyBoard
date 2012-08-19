@@ -174,7 +174,6 @@ class Extension(object):
             self.log(self.instance.lang["PB_COULDNT_HOOK_EVENT"].format(id=self.IDENTIFIER, func=callable), self.LOGLEV_ERROR)
 
     def addPage(self, uri, handler):
-        print handler
         try:
             self.instance.Pages
         except AttributeError:

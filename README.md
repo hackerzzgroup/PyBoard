@@ -14,6 +14,11 @@ See **INSTALL.md** for instructions or **EHLP.md** if you want to help me finish
 - Extension loader
 - No docs
 
+### Dependencies ###
+
+- [pystache](https://github.com/defunkt/pystache)
+- ImageMagick command-line tools
+
 ### Author ###
 
 Please send any inquiries to:  

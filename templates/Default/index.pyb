@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+		<title>/{{board.id}}/ - {{board.name}}</title>
+		<script type="text/javascript" src="{{constant.static}}/scripts/board.js"></script>
+		{{#constant.scripts}}
+		<script type="text/javascript" src="{{constant.root}}/{{script}}"></script>
+		{{/constant.scripts}}
+		<link id="css_main" rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/main.css">
+		<link id="css_thrd" rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/thread.css">
+		<link id="css_form" rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/form.css">
+		<link id="css_mob" rel="stylesheet" media="screen and (max-device-width:480px)"href="{{constant.static}}/style/mob.css">
+		{{#mod}}<link rel="stylesheet" href="{{constant.static}}/style/modbar.css">{{/mod}}
+	</head>
+	<body>
+		{{{topbar}}}
+		<div id="fade"></div>
+		{{#mod}}<div class="modbar" title="You are browsing as a mod."></div>{{/mod}}
+		<div class='head'>
+			<a href="/"><img src='/banner' alt='Banner' id='site-banner'></a>
+			<h1>/{{board.id}}/ - {{board.name}}</h1>
+			<h5>{{{board.sub}}}</h5>
+		</div>
+		<div class="centre postform">
+			<form name="input" action="/post" method="post" enctype="multipart/form-data">
+				{{#form}}
+				{{{field}}}
+				{{/form}}
+			</form>
+		</div>
+		<div class='separator'></div>
+		<form name="dbd" action="/delete" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="action" value="delete_post">	
+			<input type="hidden" name="bid" value="{{board.id}}">	
+			{{#threads}}
+			<div class="thread-cont" id="thread_{{tid}}">
+				{{#op}}
+				<div class="thread op" id="post_{{tid}}">
+					{{#has_image}}
+					{{#image}}
+					{{#spoiler}}
+					<p class="file">{{FILE}}: <a class="file_link" href="{{image_link}}">{{SPOILER}}</a>, {{image_size}}</p>
+					<a class="img_cont" href="{{image_link}}"><img class="elem_img" alt="Post image" src="{{constant.static}}/img/spoiler.png"></a>
+					{{/spoiler}}
+					{{^spoiler}}
+					<p class="file">{{FILE}}: <a class="file_link" href="{{image_link}}">{{image_trunc_filename}}</a>, {{image_size}}</p>
+					<a class="img_cont" href="{{image_link}}"><img class="elem_img" alt="Post image" src="{{image_thumbnail}}"></a>
+					{{/spoiler}}
+					{{/image}}
+					{{^image}}
+					<p class="file deleted">{{FILE_DELETED}}</p>
+					<a><img class="elem_img deleted" alt="Post image" src="{{constant.static}}/img/deleted.png"></a>
+					{{/image}}
+					{{/has_image}}
+					<p class="postinfo" id="postinfo_{{tid}}">
+						<input type="checkbox" name="delpost" value="{{tid}}" class="check_del">
+						{{#subject}}
+						<span class="subject">{{subject}}</span>
+						{{/subject}}
+						<span class="poster">
+							{{#email}}
+							<a href='mailto:{{email}}'>{{name}}</a>
+							{{/email}}
+							{{^email}}
+							{{name}}
+							{{/email}}
+							{{#tripcode}}
+							<span class="tripcode">{{tripcode}}</span>
+							{{/tripcode}}
+							{{#capcode}}
+							{{{capcode}}}
+							{{/capcode}}
+						</span>
+						{{#mod}}
+						<span class="poster-ip">[<a href="/admin?poster&amp;ip={{addr}}">{{addr}}</a>]</span>
+						{{/mod}}
+						<span class="date">{{time}}</span>
+						<a class="postno" id="{{tid}}" href="/{{board.id}}/res/{{tid}}.html">No.</a><a class="postno" href="javascript:void(0);" onclick="highlight('{{tid}}')">{{tid}}</a>
+						[<a class="replylink" href="/{{board.id}}/res/{{tid}}.html{{#mod}}?mod{{/mod}}">{{REPLY}}</a>]
+						{{#attrs.locked}}
+						<span class='minicon lock'></span>
+						{{/attrs.locked}}
+						{{#attrs.stuck}}
+						<span class='minicon stick'></span>
+						{{/attrs.stuck}}
+					</p>
+					{{#mod}}
+					<p class="modtools">
+						<a href="/mod_action?a=delete_post&amp;bid={{board.id}}&amp;post={{tid}}">[{{DELETE}}]</a>
+						<a href="/mod_action?a=delete_by_poster&amp;bid={{board.id}}&amp;ip={{addr}}">[{{DELETE}}+]</a>
+						<a href="/mod_action?a=delete_by_poster&amp;ip={{addr}}">[{{DELETE}}++]</a>
+						<a href="/mod_action?a=ban_poster&amp;bid={{board.id}}&amp;post={{tid}}&amp;ip={{addr}}">[{{BAN}}]</a>
+						<a href="/mod_action?a=ban_poster&amp;post={{tid}}&amp;ip={{addr}}">[{{BAN}}+]</a>
+						<a href="/mod_action?a=ionize&amp;ip={{addr}}">[<span style="color:red;">{{IONIZE}}</span>]</a>
+						{{#attrs.locked}}
+						<a href="/mod_action?a=unlock_thread&amp;bid={{board.id}}&amp;post={{tid}}">[{{UNLOCK}}]</a>
+						{{/attrs.locked}}
+						{{^attrs.locked}}
+						<a href="/mod_action?a=lock_thread&amp;bid={{board.id}}&amp;post={{tid}}">[{{LOCK}}]</a>
+						{{/attrs.locked}}
+						{{#attrs.stuck}}
+						<a href="/mod_action?a=unstick_thread&amp;bid={{board.id}}&amp;post={{tid}}">[{{UNSTICK}}]</a>
+						{{/attrs.stuck}}
+						{{^attrs.stuck}}
+						<a href="/mod_action?a=stick_thread&amp;bid={{board.id}}&amp;post={{tid}}">[{{STICK}}]</a>
+						{{/attrs.stuck}}
+						{{#attrs.autosaged}}
+						<a href="/mod_action?a=enable_bump&amp;bid={{board.id}}&amp;post={{tid}}">[{{BUMP_UNLOCK}}]</a>
+						{{/attrs.autosaged}}
+						{{^attrs.autosaged}}
+						<a href="/mod_action?a=disable_bump&amp;bid={{board.id}}&amp;post={{tid}}">[{{BUMP_LOCK}}]</a>
+						{{/attrs.autosaged}}
+					</p>
+					{{/mod}}
+					<p class="postbody op" id="postbody_{{tid}}">
+						{{{body}}}
+					</p>
+					{{#omit}}
+					<p class="omit">{{omit}}</p>
+					{{/omit}}
+				</div>
+				{{/op}}
+					{{#replies}}
+					<div class="thread reply" id="post_{{postid}}">
+						<p class="postinfo" id="postinfo_{{postid}}">
+							<input type="checkbox" name="delpost" value="{{postid}}" class="check_del">
+							{{#subject}}
+							<span class="subject">{{subject}}</span>
+							{{/subject}}
+							<span class="poster">
+								{{#email}}
+								<a href='mailto:{{email}}'>{{name}}</a>
+								{{/email}}
+								{{^email}}
+								{{name}}
+								{{/email}}
+								{{#tripcode}}
+								<span class="tripcode">{{tripcode}}</span>
+								{{/tripcode}}
+								{{#capcode}}
+								{{{capcode}}}
+								{{/capcode}}
+							</span>
+							{{#mod}}
+							<span class="poster-ip">[<a href="/admin?poster&amp;ip={{addr}}">{{addr}}</a>]</span>
+							{{/mod}}
+							<span class="date">{{time}}</span>
+							<a class="postno" id="{{postid}}" href="/{{board.id}}/res/{{tid}}.html{{#mod}}?mod{{/mod}}#{{postid}}">No.</a><a class="postno" href="javascript:void(0);" onclick="highlight('{{postid}}')">{{postid}}</a>
+						</p>
+						{{#mod}}
+						<p class="modtools">
+							<a href="/mod_action?a=delete_post&amp;bid={{board.id}}&amp;post={{postid}}">[{{DELETE}}]</a>
+							<a href="/mod_action?a=delete_by_poster&amp;bid={{board.id}}&amp;ip={{addr}}">[{{DELETE}}+]</a>
+							<a href="/mod_action?a=delete_by_poster&amp;ip={{addr}}">[{{DELETE}}++]</a>
+							<a href="/mod_action?a=ban_poster&amp;bid={{board.id}}&amp;post={{postid}}&amp;ip={{addr}}">[{{BAN}}]</a>
+							<a href="/mod_action?a=ban_poster&amp;post={{postid}}&amp;ip={{addr}}">[{{BAN}}+]</a>
+							<a href="/mod_action?a=ionize&amp;ip={{addr}}">[<span style="color:red;">{{IONIZE}}</span>]</a>
+						</p>
+						{{/mod}}
+						{{#has_image}}
+						{{#image}}
+						{{#spoiler}}
+						<p class="file">{{FILE}}: <a class="file_link" href="{{image_link}}">{{SPOILER}}</a>, {{image_size}}</p>
+						<a class="img_cont" href="{{image_link}}"><img class="elem_img" alt="Post image" src="{{constant.static}}/img/spoiler.png"></a>
+						{{/spoiler}}
+						{{^spoiler}}
+						<p class="file">{{FILE}}: <a class="file_link" href="{{image_link}}">{{image_trunc_filename}}</a>, {{image_size}}</p>
+						<a class="img_cont" href="{{image_link}}"><img class="elem_img" alt="Post image" src="{{image_thumbnail}}"></a>
+						{{/spoiler}}
+						{{/image}}
+						{{^image}}
+						<p class="file deleted">{{FILE_DELETED}}</p>
+						<a><img class="elem_img deleted" alt="Post image" src="{{constant.static}}/img/deleted.png"></a>
+						{{/image}}
+						{{/has_image}}
+						<div class="postbody reply" id="postbody_{{postid}}">
+							{{{body}}}
+						</div>
+					</div><br>
+					{{/replies}}
+			</div>
+			<div class='separator'></div>
+			{{/threads}}
+			{{^threads}}
+				<div id="nothreads">
+					<center><h3>There are no threads.</h3></center>
+				</div>
+				<div class="separator"></div>
+			{{/threads}}
+			<div id="controls">
+				<div class='pager'>
+					{{#previous}}
+					[<a href='/{{board.id}}/{{location}}.html{{#mod}}?mod{{/mod}}'>{{id}}</a>]
+					{{/previous}}
+					[<b>{{thispage}}</b>]
+					{{#next}}
+					[<a href='/{{board.id}}/{{id}}.html{{#mod}}?mod{{/mod}}'>{{id}}</a>]
+					{{/next}}
+				</div>
+				<div class='postcontrols'>
+					<input class="delb l" name="rmpost" type="submit" value="{{DELETE}}">
+					<input class="delb r" name="rmpost" type="submit" value="{{FILE}}">
+				</div>
+			</div>
+		</form>
+		<div class="footer">
+			<span class='footer-span'>{{POWERED_BY}} "{{constant.version}}" | {{{constant.eyecatch}}} | d:{{d}} {{#mod}}| <a href="/{{board.id}}/index.html">[{{EXIT_MODVIEW}}]</a>{{/mod}}</span>
+		</div>
+	</body>
+</html>

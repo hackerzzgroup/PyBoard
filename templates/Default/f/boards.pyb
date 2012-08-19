@@ -1,0 +1,31 @@
+<h1>{{MP_BOARDS}}</h1>
+<form id="boards-f" method="post" action="/mod_action">
+<input type="hidden" name="action" value="del_board">
+{{#has_boards}}
+<table class="mod_table">
+	<tr class="header">
+		<th class="blank"></td>
+		<td>{{NAME}}</td>
+		<td class="right_align min">{{ACTIVE_POSTS}}</th>
+		<td class="right_align min">{{ACTIVE_THREADS}}</th>
+	</tr>
+	{{#boards}}
+	<tr>
+		<td class="check min"><input class="ub-check" type="checkbox" name="delete" value="{{id}}"></th>
+		<td><a href="/{{id}}/{{#can_mod}}?mod{{/can_mod}}">/{{id}}/ - {{name}}</a> {{#can_setup}}[<a href="/admin?board_settings&amp;board={{id}}">settings</a>]{{/can_setup}}</td>
+		<td class="right_align min">{{post_count}}</td>
+		<td class="right_align min">{{thread_count}}</td>
+	</tr>
+	{{/boards}}
+</table>
+{{#has_delete}}
+<input class="b full small" type="submit" name="del" value="{{DELETE}}">
+{{/has_delete}}
+{{/has_boards}}
+</form>
+{{^has_boards}}
+<h3><p id="nodata">{{NO_BOARDS}}</p></h3>
+{{/has_boards}}
+{{#has_create}}
+<a href="/admin?boards&amp;create">{{NEW_BOARD}}</a>
+{{/has_create}}

@@ -1,0 +1,33 @@
+@media only screen and (max-device-width: 480px) {
+	body {
+		padding:0;
+		margin:4em 0.5em 0.5em 0.5em;
+	}
+	#site-banner {
+		width:225px;
+		height:75px;
+	}
+	.text, .pt {
+		width:270px!important;
+	}
+	.text {
+		box-sizing:border-box;
+	}
+	.pt {
+		padding:3px 0;
+		margin:5px auto;
+	}
+	.stext {
+		width:210px!important;
+		box-sizing:border-box;
+	}
+	.elem_img, .deleted {
+		max-width:125px;
+	}
+	.elem_img .expanded {
+		max-width:100%;
+	}
+	.thread-cont {
+		padding:0.3em 0 1em 0;
+	}
+}

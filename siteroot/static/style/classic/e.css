@@ -1,0 +1,11 @@
+.separator.t {
+	margin-top:1.5em;
+}
+.trace_head {
+	text-align:left;
+}
+.trace {
+	text-align:left;
+	font-size:10pt;
+	word-wrap:break-word;
+}

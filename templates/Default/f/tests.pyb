@@ -1,0 +1,26 @@
+<h1>Debug</h1>
+<h5>don't fuck with</h5>
+<div class="separator t"></div><br>
+<div class="sform">
+{{#can_reloaddb}}
+<a class="b full" href="/mod_action?reload_db">Reload databases</a><br>
+{{/can_reloaddb}}
+{{#can_flushcache}}
+<a class="b full" href="/mod_action?flush_cache">Flush template cache</a><br>
+{{/can_flushcache}}
+{{#can_reloadconfig}}
+<a class="b full" href="/mod_action?reload_config">Reload config</a><br>
+{{/can_reloadconfig}}
+{{#can_flushbans}}
+<a class="b full" href="/mod_action?sync_bans">Prune bans</a><br>
+{{/can_flushbans}}
+{{#can_rebuild}}
+<a class="b full" href="/mod_action?rebuild_all">Rebuild static content</a><br>
+{{/can_rebuild}}
+{{#can_relang}}
+<a class="b full" href="/mod_action?reload_lang">Reload language file</a><br>
+{{/can_relang}}
+{{#can_repages}}
+<a class="b full" href="/mod_action?reload_core">Reload core pages</a><br>
+{{/can_repages}}
+</div>

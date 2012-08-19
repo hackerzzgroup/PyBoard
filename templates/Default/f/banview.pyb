@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<title>{{CONFIRM_BAN}}</title>
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/main.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/form.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/thread.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/mod.css">
+		<script type="text/javascript" src="{{constant.static}}/scripts/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="{{constant.static}}/scripts/admin.js"></script>
+	</head>
+<body>
+	{{{topbar}}}
+<div id="fade"></div>
+<div class='head'>
+<h1 class="lone_header">{{NEW_BAN}}</h1>
+</div>
+<div class="separator t"></div>
+<div class="centre">
+	{{^bid}}
+	<h3>{{IS_ABOUT_TO_BAN}} <span class="poster">{{ip}}</span> {{FROM}} {{ALL_BOARDS}}.</h3>
+	{{/bid}}
+	{{#bid}}
+	<h3>{{IS_ABOUT_TO_BAN}} <span class="poster">{{ip}}</span> {{FROM}} /{{bid}}/.</h3>
+	{{/bid}}
+	<form class="sform d" action="/mod_action?set_ban" method="post">
+		<input type="hidden" name="post" value="{{post}}">
+		<p class="form-sect">Length (2h, 40m)</p>
+		<input class="text" type="text" placeholder="Length" name="length">
+		<p class="form-sect">Message</p>
+		<div class="text ft pm">
+			<input type="checkbox" name="silent"> Don't post ban message
+		</div>
+		<div class="text ft pm tsl">
+			<input id="banmessage" class="rs bx ex" type="text" placeholder="Message" name="message">
+		</div>
+		<div id="bmexample" class="banned">
+			(<span id="bantext">USER WAS BANNED FOR THIS POST</span>)
+		</div>
+		<textarea class="text area" placeholder="Comment">No reason</textarea>
+		<input class="b full small d" type="submit" value="yeh">
+	</form>
+	<a href="/admin?boards" rel="return" title="{{RETURN}}">nop</a>
+</div>
+<div class='separator'></div>
+<div class="footer">
+	<span class='footer-span'>{{POWERED_BY}} "{{constant.version}}" | {{{constant.eyecatch}}}</span>
+</div>
+</body>
+</html>

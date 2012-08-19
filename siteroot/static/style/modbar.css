@@ -1,0 +1,58 @@
+.modbar.line {
+	background-color:rgb(255,255,204);
+	position:fixed;
+	right:0;
+	top:0;
+	width:5px;
+	height:100%
+}
+.modbar.jew {
+	background-image:url(/static/img/mods.png);
+	width:128px;
+	height:148px;
+	position:fixed;
+	bottom:0px;
+	right:0px;
+	background-position:bottom right;
+	background-repeat:no-repeat;
+	-webkit-transition:100ms linear;
+	-moz-transition:100ms linear;
+	-o-transition:100ms linear;
+	-ms-transition:100ms linear;
+}
+.modbar.homu {
+	background-image:url(/static/img/homu_small.png);
+	width:128px;
+	height:174px;
+	position:fixed;
+	bottom:0px;
+	right:10px;
+	background-position:bottom right;
+	background-repeat:no-repeat;
+	-webkit-transition:100ms linear;
+	-moz-transition:100ms linear;
+	-o-transition:100ms linear;
+	-ms-transition:100ms linear;
+}
+.modbar.stee {
+	background-image:url(/static/img/stee_new.png);
+	width:152px;
+	height:184px;
+	position:fixed;
+	bottom:0px;
+	right:0px;
+	background-position:bottom right;
+	background-repeat:no-repeat;
+	-webkit-transition:100ms linear;
+	-moz-transition:100ms linear;
+	-o-transition:100ms linear;
+	-ms-transition:100ms linear;
+}
+.modbar.jew:hover, .modbar.stee:hover {
+	padding-top:100px;
+	bottom:-100px;
+}
+.modbar.homu:hover {
+	padding-top:80px;
+	bottom:-80px;
+}

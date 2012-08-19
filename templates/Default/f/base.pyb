@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<title>PyBoard - {{ADMIN}}</title>
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/main.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/form.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/mod.css">
+	</head>
+<body>
+<div id="fade"></div>
+<div id="leftbar" class="modpanel-sidebar">
+	<div id="modpanel-sidebar-inner">
+		{{#sections}}
+		<div class="section-link {{#selected}}selected{{/selected}}">
+			<a href="/admin?{{location}}">{{name}}</a>
+		</div>
+		{{/sections}}
+	</div>
+	<div class="bct">
+		<div class="section-link lo">
+			<a href="/logout">{{LOGOUT}}</a>
+		</div>
+	</div>
+</div>
+<div id="rightbar" class="centre modpanel-content">
+	<div id="rbcontent">
+		{{{content}}}
+	</div>
+	<div class="separator"></div>
+	<div class="footer">
+		<span class='footer-span'>{{POWERED_BY}} "{{constant.version}}" | {{{constant.eyecatch}}}</span>
+	</div>
+</div>
+</body>
+</html>

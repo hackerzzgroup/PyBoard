@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<title>{{BANNED}}!</title>
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/main.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/thread.css">
+		<link rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/noticeboard.css">
+	</head>
+<body>
+	{{{topbar}}}
+<div id="fade"></div>
+<div class='head'>
+<h1>{{BANNED}}</h1><br>
+</div>
+<div class="separator t"></div>
+<div class="centre">
+	<div class="infoboard">
+		{{^global}}
+		<p class="baninfo">{{YOU_ARE_BANNED_FROM}} <b>/{{bid}}/</b> {{FOR_FOLLOWING_REASON}}</p>
+		{{/global}}
+		{{#global}}
+		<p class="baninfo">{{YOU_ARE_BANNED_FROM}} <b>all boards</b> {{FOR_FOLLOWING_REASON}}</p>
+		{{/global}}
+		<p class="banreason"><span class="poster">{{reason}}</span></p>
+		<p class="baninfo">{{BAN_FILED}} <b>{{started}}</b> and expires on <b>{{expires}}</b>{{#has_rel}}, {{relative}}{{/has_rel}}{{^has_rel}}.{{/has_rel}}<br>
+		{{NAME_POSTED_WITH}} <span class="poster">{{name}}</span>, {{FROM}} <span class="poster">{{ip}}</span>.</p>
+	</div>
+</div>
+<div class='separator'></div>
+<div class="footer">
+<span class='footer-span'>{{POWERED_BY}} "{{constant.version}}" | {{{constant.eyecatch}}}</span>
+</div>
+</body>
+</html>

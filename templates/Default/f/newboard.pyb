@@ -1,0 +1,8 @@
+<h1 class="lone_header">{{NEW_BOARD}}</h1>
+<form class="sform" name="boards-c" action="/mod_action" method="post">
+    <input type="hidden" name="action" value="add_board">
+    <input class="text" type="text" name="id" placeholder="{{BOARD_ID}}">
+    <input class="text" type="text" name="name" placeholder="{{NAME}}">
+    <textarea class="text area" type="text" name="sub" placeholder="{{SUB_HEAD}}"></textarea>
+    <input class="b full" type="submit" name="submit" value="{{CREATE}}">
+</form>

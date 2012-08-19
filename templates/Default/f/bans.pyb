@@ -1,0 +1,47 @@
+<h1>{{BANS}}</h1>
+<form id="bans-f" action="/mod_action" method="post">
+	<input type="hidden" name="action" value="del_ban">
+	{{#has_bans}}
+	<table class="tcc">
+		<tr>
+			<td class="thead"></td>
+			<td class="thead bmin2">{{BOARD}}</th>
+			<td class="thead bmin">{{ADDRESS}}</th>
+			<td class="thead bmin">{{STARTED}}</th>
+			<td class="thead bmin">{{EXPIRES}}</th>
+			<td class="thead">{{COMMENT}}</td>
+		</tr>
+		{{#bans}}
+		<tr class="ms">
+		  	<th class="cbc"><input class="ub-check" type="checkbox" name="delete_{{id}}"></th>
+			{{#global}}
+			<td class="bmin2">{{GLOBAL}}</td>
+			{{/global}}
+			{{^global}}
+			<td class="bmin2"><a href="/{{bid}}/?mod=true">/{{bid}}/</a></td>
+			{{/global}}
+			<td class="bmin">{{address}}</td>
+			<td class="bmin">{{started_str}}</td>
+			<td class="bmin">{{expires_str}}</td>
+			<td>{{reason}}</td>
+		</tr>
+		{{/bans}}
+	</table>
+	<div class="pager">
+		{{#has_less}}
+		<a href="/admin?bans&amp;pos={{last_pos}}">{{PREV_50}}</a>
+		{{#has_more}}
+		 | 
+		{{/has_more}}
+		{{/has_less}}
+		{{#has_more}}
+		<a href="/admin?bans&amp;pos={{next_pos}}">{{NEXT_50}}</a>
+		{{/has_more}}
+	</div><br>
+	<input class="b full small" type="submit" name="del" value="{{DELETE_SELECTED}}">
+	{{/has_bans}}
+	{{^has_bans}}
+	<p id="nodata"><h3>{{NO_BANS_TO_SHOW}}</h3></p>
+	{{/has_bans}}
+	<a class="b full small" href="/admin?bans&amp;new">{{NEW_BAN}}</a>
+</form>

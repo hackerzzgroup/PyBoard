@@ -1,0 +1,14 @@
+*.pyc
+*.sqlite3
+
+data/config.py
+data/extdata/
+data/boards/
+siteroot/*
+extensions/*
+tmp/
+
+!siteroot/static/
+!siteroot/favicon.ico
+!siteroot/index.html
+!extensions/sqlite.py

@@ -1,0 +1,137 @@
+/* Here be dragons */
+
+.anotherform {
+	padding:0.5em 0;
+}
+.text {
+	width:100%;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+.modpanel-sidebar {
+	position:fixed;
+	top:0;
+	width:200px;
+	text-align:right;
+	height:100%;
+	font-size:14px;
+	background-color:rgba(0,19,47,0.40);
+	font-family:sans-serif;
+	box-shadow:inset -1px 0px 3px rgba(0,0,0,0.25), 1px 0px 0px rgba(255,255,255,0.55);
+	left:0;
+}
+p.generic {
+	padding:1em 0;
+}
+button.generic {
+	margin-bottom:0.8em
+}
+#modpanel-sidebar-inner {
+	padding-top:3em;
+}
+.modpanel-content {
+	padding-left:200px;
+}
+.section-link {
+	padding:0.5em 1.5em;
+}
+.section-link.dangerous a {
+	color:rgb(255,150,150);
+}
+.section-link.selected {
+	background-color:rgba(0,19,47,0.25);
+	box-shadow:inset 0px 1px 1px rgba(0,0,0,0.15), inset 0px -1px 1px rgba(0,0,0,0.15), inset 0px -1px 0px rgba(0,19,47,0.35), inset 0px 1px 0px rgba(0,19,47,0.35);
+	margin:0;
+	font-weight:bold;
+}
+.section-link a {
+	color:white;
+	text-decoration:none;
+	text-shadow:0px 1px 1px rgba(0,0,0,0.35);
+}
+.bct {
+	position:absolute;
+	bottom:3em;
+	width:200px;
+}
+.separator.inner {
+	margin:0.4em 0;
+}
+#centerbox {
+	position:absolute; 
+	top:0; 
+	bottom:0; 
+	left:0; 
+	right:0; 
+	margin:auto; 
+	height:300px;
+	width:300px;
+}
+#centerboxcontent {
+	position:relative;
+	height:300px;
+	top:-50px;
+}
+#login {
+	font-size:32px;
+	display:block;
+	width:auto;
+	text-align:center;
+}
+.sform {
+	width:250px;
+	margin:0 auto;
+}
+.b.full.small {
+	width:250px;
+	display:block;
+	margin:0 auto;
+	margin-bottom:0.5em;
+}
+.d {
+	width:372px;
+	text-align:left;
+}
+.b.d {
+	text-align:center;
+	width:372px!important;
+}
+.lone_header {
+	margin-bottom:0.5em;
+}
+.banned {
+	text-align:center;
+	margin:1em;
+}
+.mod_table {
+	border-collapse:collapse;
+	width:80%;
+	font-family:sans-serif;
+	font-size:13px;
+	text-align:left;
+	margin:2em auto;
+}
+.mod_table .right_align {
+	text-align:right;
+}
+.mod_table .min {
+	width:1%;
+}
+.mod_table .header {
+	font-weight:bold;
+	white-space:nowrap;
+}
+.mod_table tr:nth-child(even):not(.header) {
+	background-color:lightGrey;
+}
+.mod_table td {
+	margin:0;
+	padding:0.5em;
+	border:1px solid gray;
+}
+.mod_table .blank {
+	visibility:hidden;
+}
+.separator {
+	margin:1em 0;
+}

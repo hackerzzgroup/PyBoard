@@ -1,0 +1,243 @@
+/* Here be dragons */
+
+.anotherform {
+    padding:0.5em 0;
+}
+.text {
+    width:100%;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+}
+.modpanel-sidebar {
+    position:fixed;
+    top:0;
+    width:200px;
+    text-align:right;
+    height:100%;
+    font-size:14px;
+    background-color:rgba(0,19,47,0.40);
+    font-family:sans-serif;
+    box-shadow:inset -1px 0px 3px rgba(0,0,0,0.25), 1px 0px 0px rgba(255,255,255,0.55);
+    left:0;
+}
+p.generic {
+    padding:1em 0;
+}
+button.generic {
+    margin-bottom:0.8em
+}
+.cbc {
+    width:1%;
+}
+.min {
+    width:100px;
+    text-align:right;
+    border-left:1px solid rgb(183,197,217);
+}
+.bmin {
+    width:200px;
+    border-left:1px solid rgb(183,197,217);
+}
+.bmin2 {
+    width:50px;
+    border-left:1px solid rgb(183,197,217);
+}
+#modpanel-sidebar-inner {
+    padding-top:3em;
+}
+.modpanel-content {
+    padding-left:200px;
+}
+#fade {
+    left:0px;
+}
+.section-link {
+    padding:0.5em 1.5em;
+}
+.section-link.dangerous a {
+    color:rgb(255,150,150);
+}
+.section-link.selected {
+    background-color:rgba(0,19,47,0.25);
+    box-shadow:inset 0px 1px 1px rgba(0,0,0,0.15), inset 0px -1px 1px rgba(0,0,0,0.15), inset 0px -1px 0px rgba(0,19,47,0.35), inset 0px 1px 0px rgba(0,19,47,0.35);
+    margin:0;
+    font-weight:bold;
+}
+.section-link a {
+    color:white;
+    text-decoration:none;
+    text-shadow:0px 1px 1px rgba(0,0,0,0.35);
+}
+.bct {
+    position:absolute;
+    bottom:3em;
+    width:200px;
+}
+td {
+    padding:3px;
+    width:auto;
+}
+td.thead {
+    font-weight:bold;
+    border-bottom:1px solid rgb(183,197,217);
+}
+.tcc {
+    border-spacing:2px 0;
+    padding:0.4em;
+    margin:2em auto;
+    box-shadow:inset 0px 1px 2px rgba(0,0,0,0.25), 0px 1px 0px rgba(255,255,255,0.55);
+    background-color:rgba(0,19,47,0.10);
+    border-radius:6px;
+    text-align:left;
+    width:80%;
+}
+.table-r {
+    word-wrap:normal;
+    display:inline-table;
+    width:100%;
+}
+.table-r.header .thsect {
+    font-weight:bold;
+}
+.table input {
+    margin-left:8px;
+}
+.thsect {
+    text-align:left;
+    display:inline-block;
+    vertical-align:top;
+    display:table-cell;
+    width:auto;
+}
+.thsect.sm {
+    width:200px;
+}
+.fl {
+    float:left;
+}
+.ra {
+    text-align:right;
+    width:100px!important;
+}
+.separator.inner {
+    margin:0.4em 0;
+}
+.popupbg {
+    position:fixed;
+    top:0;
+    left:0;
+    text-align:center;
+    /*background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgba(255,255,255,0.15)), to(rgba(255,255,255,0)));
+    background-image: -webkit-radial-gradient(50% 50%, ellipse, rgba(255,255,255,0.15) 0%,rgba(255,255,255,0) 50%);
+    background-image: -moz-radial-gradient(50% 50%, ellipse, rgba(255,255,255,0.15) 0%,rgba(255,255,255,0) 50%);*/
+    background-color:rgba(0,0,0,0.80);
+    background-repeat:no-repeat;
+    background-size:100%;
+    background-position:0%;
+    height:100%;
+    width:100%;
+}
+.popupcontainer {
+    position: absolute;
+    top: 25%;
+    width: 352px;
+    height: 60%;
+    text-align:center!important;
+}
+.popupccontainer {
+    position:absolute;
+    left:0;
+    right:0;
+}
+.popupcontent {
+    background-color:rgba(255,255,255,0.80);
+    padding:0.5em 1em;
+    text-align:center;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.80);
+    box-shadow:0px 2px 3px rgba(0,0,0,0.30);
+}
+.popupcontent .title {
+    font-size:12pt;
+    margin:0;
+    margin-top:0.2em;
+    text-align:center;
+}
+.popupcontent .murmur {
+    color:gray;
+}
+.murmur.close {
+    position:absolute;
+    top:7px;
+    right:10px;
+    font-size:20px;
+}
+.loginmsg {
+    color:gray;
+    float:right;
+    text-align:right;
+    font-size:11px;
+    line-height:27px;
+    padding-right:5px;
+}
+.murmur.close:active {
+    color:rgb(93,93,93);
+}
+.button {
+    margin:0;
+    font-size:10pt;
+}
+#rbcontent {
+    padding-bottom:1em;
+}
+.cbcontainer, #dbd {
+    text-align:left;
+    width:200px;
+    margin:0 auto;
+}
+#centerbox {
+    position:absolute; 
+    top:0; 
+    bottom:0; 
+    left:0; 
+    right:0; 
+    margin:auto; 
+    height:300px;
+    width:300px;
+}
+#centerboxcontent {
+    position:relative;
+    height:300px;
+    top:-50px;
+}
+#login {
+    font-size:32px;
+    display:block;
+    width:auto;
+    text-align:center;
+}
+.sform {
+    width:250px;
+    margin:0 auto;
+}
+.b.full.small {
+    width:250px;
+    display:block;
+    margin:0 auto;
+    margin-bottom:0.5em;
+}
+.d {
+    width:372px;
+    text-align:left;
+}
+.b.d {
+    text-align:center;
+    width:372px!important;
+}
+.lone_header {
+    margin-bottom:0.5em;
+}
+.banned {
+	text-align:center;
+	margin:1em;
+}

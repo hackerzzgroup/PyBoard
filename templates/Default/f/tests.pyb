@@ -1,5 +1,4 @@
-<h1>Debug</h1>
-<h5>don't fuck with</h5>
+<h1>Tools</h1>
 <div class="separator t"></div><br>
 <div class="sform">
 {{#can_reloaddb}}

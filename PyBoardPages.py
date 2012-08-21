@@ -333,9 +333,9 @@ class Admin(PyBoardObjects.Extension):
                 "name": "Bans",
                 "origin": "net.pyboard.admin"
             }),
-            ("advanced", {
+            ("tools", {
                 "call": self.fAdvanced,
-                "name": "Advanced",
+                "name": "Tools",
                 "origin": "net.pyboard.admin"
             })]
         ))

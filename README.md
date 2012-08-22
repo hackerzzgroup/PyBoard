@@ -27,8 +27,8 @@ Please send any inquiries to:
 
 ### License ###
 
-PyBoard is free software under the terms of the new BSD License:
-
+PyBoard is free software under the terms of the hPLv2:
+<!---
 Copyright (c) 2011 - 2012, the PyBoard developers  
 All rights reserved.  
   
@@ -54,3 +54,25 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT  
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS  
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
+-->
+
+dis iz hPL v2
+imho u shud uz hPL v2 but idfc mang u can uz hPL v1 i guss
+
+this is da h public license
+best license ever imho l0l
+^ tbqhz
+
+rools of da h public license (frum her on out nown az h)
+
+1. do whatever the fuck you want man idfk tbh imho
+2. fk off copyright lawyers
+3. gtfo my software copyright lawyers
+4. lmao u got 0wn3d xD
+5. l0l
+6. (imho) (tbh) (l0l)
+7. hunter is cool l0l
+8. h
+9. h
+11. h
+12. u cant get made at mi 4 nt havn a #10 l0l

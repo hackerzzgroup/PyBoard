@@ -56,14 +56,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
 -->
 
-dis iz hPL v2
-imho u shud uz hPL v2 but idfc mang u can uz hPL v1 i guss
+dis iz hPL v2  
+imho u shud uz hPL v2 but idfc mang u can uz hPL v1 i guss  
 
-this is da h public license
-best license ever imho l0l
-^ tbqhz
+this is da h public license  
+best license ever imho l0l  
+^ tbqhz  
 
-rools of da h public license (frum her on out nown az h)
+rools of da h public license (frum her on out nown az h)  
 
 1. do whatever the fuck you want man idfk tbh imho
 2. fk off copyright lawyers

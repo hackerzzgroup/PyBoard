@@ -17,9 +17,11 @@
 					<input class="text" type="text" name="user" placeholder="{{USERNAME}}"><br>
 					<input class="text" type="password" name="password" placeholder="{{PASSWORD}}"><br>
 					<input class="b full" type="submit" value="{{SUBMIT}}">
-				</form><br>
+				</form>
+				<div class="footer">
+					<span class='footer-span'>{{PRODUCT_NAME}} "{{constant.version}}"</span>
+				</div>
 			</div>
-			<div id="foot"></div>
 		</div>
 	</body>
 </html>

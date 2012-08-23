@@ -11,7 +11,7 @@
 		<link id="css_main" rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/main.css">
 		<link id="css_thrd" rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/thread.css">
 		<link id="css_form" rel="stylesheet" href="{{constant.static}}/style/{{constant.theme}}/form.css">
-		<link id="css_mob" rel="stylesheet" media="screen and (max-device-width:480px)"href="{{constant.static}}/style/mob.css">
+		<link id="css_mob" rel="stylesheet" media="screen and (max-device-width:480px)" href="{{constant.static}}/style/mob.css">
 		{{#mod}}<link rel="stylesheet" href="{{constant.static}}/style/modbar.css">{{/mod}}
 	</head>
 	<body>

@@ -268,7 +268,7 @@ class BasePages(PyBoardObjects.Extension):
             if not filepath.endswith("/"):
                 return self.redirect(location=request.url + "/{0}".format("?" + request.environ["QUERY_STRING"] if request.query else ""))
             else:
-                filepath = filepath + "index.html"
+                filepath += "index.html"
         if request.query == "mod":
             if request.authenticated:
                 a = re.findall(r"{0}/({1})/(?:res/([0-9]+)|(index|[0-9]+))\.html".format(re.escape(self.instance.docroot), "|".join([re.escape(x) for x in self.instance.boards])), filepath)

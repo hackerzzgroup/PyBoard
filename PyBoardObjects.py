@@ -3,11 +3,11 @@
 # All rights reserved.
 import cgi
 import imp
+import mimetypes
 import os
 import re
 import sys
 import time
-import types
 import urllib
 
 class Configuration(object):
@@ -244,6 +244,23 @@ class Extension(object):
                 r.rdata = self.instance.func.read_faster(f)
                 r.headers["Content-Length"] = size
         return r
+
+    def responseFromFile(self, path, status="200 OK", headers=None):
+        if not headers:
+            headers = {}
+        path = os.path.abspath(path)
+        if os.path.isdir(path):
+            path = os.path.abspath(path + "/index.html")
+        if not os.path.isfile(path):
+            return self.generateError('404 Not Found', etext=self.instance.lang["ERR_404"])
+        if os.access(path, os.R_OK):
+            res = open(path, 'rb')
+            if "Content-Type" not in headers:
+                headers["Content-Type"] = mimetypes.guess_type(path)[0] or "text/plain"
+            headers["Content-Length"] = os.stat(path).st_size
+            return Response(status, headers, self.instance.func.read_faster(res))
+        else:
+            return self.generateError('403 Forbidden', etext=self.instance.lang["ERR_403"])
 
     class DatabaseControllerObject(object):
         def __init__(self, Global, Board, metadata):

@@ -48,7 +48,6 @@ class Functions(object):
         self.TemplateConstants = None
         self._refreshConstants()
         self.file_locks = {};
-        self.instance.log(self.instance.lang["FUNC_LOADED"])
 
     def runPostProcess(self, post, bid, mod):
         if len("".join(post["body"].replace("\n", "").split())) > 4096 or len(post["body"].split("\n")) >= 50:
@@ -217,7 +216,7 @@ class Functions(object):
             return "{0} month{2} and {1} day{3}".format(months, days, "s" if months > 1 else "", "s" if days > 1 else "") + base
 
     def get_time_offset(self, timestring):
-        if re.match(r"^p(erma(nent)?)?$", timestring):
+        if re.match(r"^p(erma(nent)?)?|never$", timestring):
             return None # permaban
         l = re.findall(r"([0-9]+)(?:\s+?)?([A-z]+)", timestring, flags=re.I)
         d, s = 0, 0
@@ -370,12 +369,12 @@ class Functions(object):
         temp = None
         if template != None:
             if len(self.TemplateCache) >= 5:
-                self.instance.log("Removed template: {0} from cache.".format(self.TemplateCache.popleft()[0]))
+                self.TemplateCache.popleft()
             for item in self.TemplateCache:
                 if item[0] == template:
                     if not os.path.getmtime(self.instance.workd + "/templates/{0}/{1}".format(tset or self.instance.conf["TemplateSet"], template)) > item[2]:
                         temp = item[1]
-                    break;
+                    break
             if not temp:
                 if template not in self.file_locks:
                     self.file_locks[template] = threading.RLock()
@@ -384,9 +383,7 @@ class Functions(object):
                     with open(self.instance.workd + "/templates/{0}/{1}".format(tset or self.instance.conf["TemplateSet"], template), "r") as plate:
                         temp = plate.read()
                     self.TemplateCache.append((template, temp, time.time()))
-                    self.instance.log("Cached template: {0}".format(template))
                     self.file_locks[template].release()
-                    # You're not going to make people's hopes come true; you're going to become hope itself, the embodiment of all hopes.
                 except IOError:
                     if template in self.file_locks:
                         self.file_locks[template].release()

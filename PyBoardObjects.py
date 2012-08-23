@@ -92,13 +92,13 @@ class Language(object):
         return self._lang.__dict__
 
     def __getitem__(self, item):
-        if isinstance(item, int):
+        if not isinstance(item, basestring):
             raise TypeError("Nope!")
         else:
             try:
                 return getattr(self._lang, item)
             except:
-                return item
+                return "KEY_MISSING:{0}".format(item)
 
 class Event(object):
     def __init__(self, eventName, cancellable=True, **kwargs):
@@ -153,10 +153,11 @@ class Extension(object):
         if not os.path.exists(self.dataFolder):
             os.mkdir(self.dataFolder)
 
-    def __str__(self):
-        return "<PBExtension {0}>".format(self.IDENTIFIER)
+    def __repr__(self):
+        return "<PBExtension {0} @ {1}>".format(self.IDENTIFIER, hex(id(self)))
 
-    __repr__ = __str__
+    def __str__(self):
+        return self.IDENTIFIER
 
     def getConfig(self, filename):
         if not os.path.exists(self.dataFolder + "/{0}".format(filename)):
@@ -191,7 +192,7 @@ class Extension(object):
                 })
                 handler = a
             self.instance.Pages[self.IDENTIFIER][uri] = handler
-            #self.log(self.instance.lang["PB_BOUND_PAGE"].format(func=function, uri=uri))
+            self.log(self.instance.lang["PB_BOUND_PAGE"].format(func=handler, uri=uri))
 
     def addModView(self, name, locname, call):
         if name == "login":
@@ -210,7 +211,6 @@ class Extension(object):
             self.instance._dbmods[self.IDENTIFIER] = {name: self.DatabaseControllerObject(*(classes + (metadata,)))}
         else:
             self.instance._dbmods[self.IDENTIFIER][name] = self.DatabaseControllerObject(*(classes + (metadata,)))
-        self.log("provides database: {0} (version {1})".format(metadata["name"], metadata["version"]))
 
     def log(self, message, loglev=0):
         if loglev == 1:
@@ -225,12 +225,12 @@ class Extension(object):
             headers = {}
         return Response(s="303 See Other", h=dict(headers.items() + [("Location", location), ("Content-Length", "0")]), r="")
 
-    def generateError(self, status="500 Internal Server Error", heading="Error", return_to=None, etext="An unspecified error occurred.", httpheaders=None):
+    def generateError(self, status="500 Internal Server Error", heading="Error", return_to=None, etext=None, httpheaders=None):
         if httpheaders == None:
             httpheaders = {}
         error = {
             "header": unicode(heading),
-            "message": unicode(etext),
+            "message": unicode(etext) or self.instance.lang["ERR_UNKNOWN"],
             "location": unicode((self.instance.func.TemplateConstants["root"] + "/") if return_to == None else return_to)
         }
         r = Response(s=status, h=dict({"Content-Type": "text/html"}.items() + httpheaders.items()), r=self.instance.func.page_format(v=error, template="error.pyb"))

@@ -50,7 +50,7 @@ class Global(object):
                 return
             else:
                 self.users.add(u, p, ["__root__"])
-                self.instance.log("User created. You may now log in at /admin.", 52346)
+                self.instance.log(self.instance.lang["FR_USER_CREATED"], 52346)
 
     def get_boards(self):
         b = {}
@@ -89,6 +89,7 @@ class Global(object):
                 "groups": bl,
             })
             if not mod:
+                self.instance.log(self.instance.lang["DB_UPDATING_TOPBAR"])
                 self._topbar = result # We don't want to cache a mod topbar!
             else:
                 return result
@@ -96,17 +97,16 @@ class Global(object):
 
     def addBoard(self, bid, name, sub):
         if bid in self.instance.boards:
-            self.instance.log("PyBoardDatabase [WARNING]: Board {0} already exists. To recreate it, delete it first.".format(bid), self.instance.LOGLEV_WARN)
+            self.instance.log(self.instance.lang["WARN_BOARD_ALREADY_EXISTS"].format(bid), self.instance.LOGLEV_WARN)
             return None
         else:
-            self.instance.log("PyBoardDatabase: Creating a new board named {0}.".format(bid))
+            self.instance.log(self.instance.lang["DB_CREATE_NEW_BOARD"].format(bid))
             self.instance.boards[bid] = self.instance._databaseImplementor.Board(self.instance, bid=bid, bname=name, bsub=sub, config=CFWrapper(cf=PyBoardObjects.Configuration(fp="boards/{0}.config.py".format(bid)), fallback=self.instance.conf))
             self.dbAddBoard(bid, name, sub)
-            self.instance.log("PyBoardDatabase: Preparing directories.")
+            self.instance.log(self.instance.lang["DB_PREPARING_DIRS"])
             os.mkdir(self.instance.workd + "/siteroot/{0}".format(bid))
             os.mkdir(self.instance.workd + "/siteroot/{0}/res".format(bid))
             os.mkdir(self.instance.workd + "/siteroot/{0}/img".format(bid))
-            self.instance.log("PyBoardDatabase: Updating topbar.")
             self.getTopbar(forceRebuild=True)
             self.instance.boards[bid].build_index()
             return True
@@ -116,14 +116,13 @@ class Global(object):
             return
         else:
             del self.instance.boards[bid]
-            self.instance.log("Deleting board " + str(bid))
             self.dbDeleteBoard(bid)
             try:
                 shutil.rmtree("{0}/{1}/".format(self.instance.docroot, bid))
                 self.getTopbar(forceRebuild=True)
             except OSError:
                 pass
-            self.instance.log("PyBoardDatabase: Delete board {0}: done.".format(bid))
+            self.instance.log(self.instance.lang["DB_DELETED_BOARD"].format(bid))
             return bid
 
     # Method stubs #

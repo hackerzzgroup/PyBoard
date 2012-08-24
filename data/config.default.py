@@ -82,7 +82,7 @@ Capcodes = {
 # Do not enable - broken regex
 ReferrerCheck       = False
 # These extensions will be skipped during loading
-ExtensionBlacklist  = []
+ExtensionBlacklist  = ["example.py"]
 # Boards accessible to authenticated users only
 AdminBoards = ["h"]
 DefaultStyle = "classic"

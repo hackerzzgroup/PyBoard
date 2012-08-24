@@ -44,7 +44,7 @@ class PyBoard(object):
         mimetypes.init()
         t = time.clock() - t
         atexit.register(self.__del__)
-        # self.raise_event(PyBoardObjects.Event("PBApplicationLady", cancellable=False))
+        self.raise_event(PyBoardObjects.Event("PBApplicationLady", cancellable=False))
         self.raise_event(PyBoardObjects.Event("PBApplicationReady", cancellable=False))
         self.log(self.lang["PB_DONE"].format(t="{:03.2f}".format(t)))
 

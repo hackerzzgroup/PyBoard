@@ -141,10 +141,7 @@ class Extension(object):
                 self.dataFolder
             except AttributeError:
                 self._prepareDataFolder()
-            if not os.path.exists(self.dataFolder + "/config.py"):
-                with open(self.dataFolder + "/config.py", "w+") as cf:
-                    cf.write("")
-            self.config = Configuration(ext=self.IDENTIFIER, fp="config.py")
+            self.config = self.getConfig()
 
     def _prepareDataFolder(self):
         if not os.path.exists(self.instance.workd + "/data/extdata/"):
@@ -159,7 +156,7 @@ class Extension(object):
     def __str__(self):
         return self.IDENTIFIER
 
-    def getConfig(self, filename):
+    def getConfig(self, filename="config.py"):
         if not os.path.exists(self.dataFolder + "/{0}".format(filename)):
             with open(self.dataFolder + "/{0}".format(filename), "w+") as cf:
                 cf.write("")
@@ -195,7 +192,7 @@ class Extension(object):
             self.log(self.instance.lang["PB_BOUND_PAGE"].format(func=handler, uri=uri))
 
     def addModView(self, name, locname, call):
-        if name == "login":
+        if name in ["login"]:
             raise AttributeError("This is a reserved name.")
         if name in self.instance.modViews and self.instance.modViews[name]["origin"] != self.IDENTIFIER:
             self.log(self.instance.lang["PB_FUNC_ALREADY_BOUND_URI"], self.LOGLEV_ERROR)

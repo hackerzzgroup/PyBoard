@@ -20,7 +20,8 @@ def main():
         http_server_a.listen(8080, "::1")
         tornado.ioloop.IOLoop.instance().start()
     except KeyboardInterrupt:
-        pass
+        print("")
+        sys.exit()
 
 if __name__ == '__main__':
     main()

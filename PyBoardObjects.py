@@ -71,9 +71,6 @@ class Configuration(object):
         setattr(self._config, item, value)
 
 class Language(object):
-    """
-    <+lilytastic> i don't want to play with neku, he's a faggot
-    """
     def __init__(self, code):
         if not isinstance(code, basestring):
             raise TypeError("Nope!")
@@ -190,7 +187,7 @@ class Extension(object):
                 })
                 handler = a
             self.instance.Pages[self.IDENTIFIER][uri] = handler
-            self.log(self.instance.lang["PB_BOUND_PAGE"].format(func=handler, uri=uri))
+            #self.log(self.instance.lang["PB_BOUND_PAGE"].format(func=handler, uri=uri))
 
     def addModView(self, name, locname, call):
         if name in ["login"]:
@@ -364,9 +361,6 @@ class Request(object):
         return "<PyBoardRequest from {0}>".format(self.origin)
 
 class Response(object):
-    """
-    <Diath> tfw you will never be in a homo relationship with any cute loli ;-;
-    """
     def __init__(self, s="200 OK", h=None, r=""):
         self._rdata = ""
         self.status = s
@@ -395,9 +389,6 @@ class Response(object):
         return "<PyBoardResponse: {0}, {1} headers>".format(self.status, len(self.headers))
 
     __str__ = __repr__
-
-# <+viracocha> oh this is an old version too; so mines missing the last 2 methods
-# <+viracocha> im not incompetent; i swear
 
 class Thread(object):
     """Represents a thread."""

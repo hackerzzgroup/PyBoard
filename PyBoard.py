@@ -1,6 +1,7 @@
 # This file is a part of PyBoard.
 # Copyright (c) 2011 - 2012 The Hackerzz Group, Inc.
 # All rights reserved.
+from __future__ import print_function
 import atexit
 import imp
 import mimetypes
@@ -108,9 +109,9 @@ class PyBoard(object):
     @staticmethod
     def log(message, loglev=0):
         if loglev == 1:
-            print(time.strftime("[%H:%M:%S] \033[33;1m[pyboard] {0}\033[0m".format(str(message))))
+            print(time.strftime("[%H:%M:%S] \033[33;1m[pyboard] {0}\033[0m".format(str(message))), file=sys.stderr)
         elif loglev == 2:
-            print(time.strftime("[%H:%M:%S] \033[31;1m[pyboard] {0}\033[0m".format(str(message))))
+            print(time.strftime("[%H:%M:%S] \033[31;1m[pyboard] {0}\033[0m".format(str(message))), file=sys.stderr)
         elif loglev == 52346:
             print(time.strftime("[%H:%M:%S] \033[32m[pyboard]\033[0m \033[33m{0}\033[0m".format(str(message))))
         else:

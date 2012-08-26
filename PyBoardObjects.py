@@ -1,6 +1,7 @@
 # This file is a part of PyBoard.
 # Copyright (c) 2011 - 2012 The Hackerzz Group, Inc.
 # All rights reserved.
+from __future__ import print_function
 import cgi
 import imp
 import mimetypes
@@ -211,9 +212,9 @@ class Extension(object):
 
     def log(self, message, loglev=0):
         if loglev == 1:
-            print(time.strftime("[%H:%M:%S] \033[33;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))))
+            print(time.strftime("[%H:%M:%S] \033[33;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))), file=sys.stderr)
         elif loglev == 2:
-            print(time.strftime("[%H:%M:%S] \033[31;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))))
+            print(time.strftime("[%H:%M:%S] \033[31;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))), file=sys.stderr)
         else:
             print(time.strftime("[%H:%M:%S] [{0}] {1}".format(self.IDENTIFIER, str(message))))
 

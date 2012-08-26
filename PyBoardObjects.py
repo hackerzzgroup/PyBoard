@@ -284,6 +284,12 @@ class Extension(object):
                 self._prepareDataFolder()
             self.config = self.getConfig()
 
+    def __unload__(self):
+        self.onUnload()
+
+    def onUnload(self):
+        pass
+
     def _prepareDataFolder(self):
         if not os.path.exists(self.instance.workd + "/data/extdata/"):
             os.mkdir(self.instance.workd + "/data/extdata/")

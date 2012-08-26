@@ -45,12 +45,35 @@ class PyBoard(object):
         self.load_database()
         self.boards = self.masterDB.get_boards()
         self.modSessions = {}
+        if os.path.isfile("{0}/.pbsession".format(self.workd)) and self.conf["SessionPersistence"]:
+            try:
+                self._loadModSessions()
+            except (ValueError, IndexError):
+                pass
         mimetypes.init()
         t = time.clock() - t
         atexit.register(self.__del__)
         self.raise_event(PyBoardObjects.Event("PBApplicationLady", cancellable=False))
         self.raise_event(PyBoardObjects.Event("PBApplicationReady", cancellable=False))
         self.log(self.lang["PB_DONE"].format(t="{:03.2f}".format(t)))
+
+    def _loadModSessions(self):
+        with open("{0}/.pbsession".format(self.workd), "r") as mf:
+            lines = [i.strip() for i in mf.readlines()]
+        os.remove("{0}/.pbsession".format(self.workd))
+        lines.reverse()
+        if lines.pop() != "__pfsessionfile{0}__".format(self.conf["__version"]):
+            return
+        else:
+            while lines:
+                recs = lines.pop()
+                if recs == "__end__":
+                    return
+                else:
+                    recs = recs.split("\xFF")
+                    for session in recs:
+                        session = session.split(":")
+                        self.modSessions[session[0]] = [session[1], int(session[2]), session[3]]
 
     def get_module(self, name, identifier):
         try:
@@ -183,13 +206,13 @@ class PyBoard(object):
         self.ap = PyBoardPages.Admin(self)
 
     def unload_extension(self, identifier):
-        self.log(self.lang["PB_START_UNLOAD"].format(id=identifier), self.LOGLEV_WARN)
         for h in self.handlers:
             if identifier in self.handlers[h]:
                 del self.handlers[h][identifier]
         if identifier in self.Pages:
             del self.Pages[identifier]
         self.log(self.lang["PB_UNLOAD_MODULE"].format(id=identifier), self.LOGLEV_WARN)
+        self.extension_by_id(identifier).__unload__()
         self.Extensions[:] = [x for x in self.Extensions if x.IDENTIFIER != identifier]
         self._extm[:] = [x for x in self._extm if x.main.IDENTIFIER != identifier]
 
@@ -234,7 +257,17 @@ class PyBoard(object):
         return l
 
     def __del__(self):
-        pass
+        for i in self.ext_identifiers:
+            if i not in ["net.pyboard", "net.pyboard.admin"]:
+                self.unload_extension(i)
+        if self.conf["SessionPersistence"]:
+            with open("{0}/.pbsession".format(self.workd), "w+") as mf:
+                mf.write("__pfsessionfile{0}__\n".format(self.conf["__version"]))
+                if self.modSessions:
+                    for i in self.modSessions:
+                        mf.write("{0}:{1}:{2}:{3}\xFF".format(i, *self.modSessions[i]))
+                    mf.write("\n")
+                mf.write("__end__")
 
     def __call__(self, environ, start_response):
         """Main request handler."""

@@ -119,3 +119,4 @@ AllowedFields = [
 ]
 # served on 404s
 GenericNotFoundFile = "static/error/404.html"
+SessionPersistence = True

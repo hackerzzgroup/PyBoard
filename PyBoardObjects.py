@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import threading
+import traceback
 import time
 import urllib
 
@@ -148,7 +149,8 @@ class TaskScheduler(object):
     """
     A scheduler for deferred tasks.
     """
-    def __init__(self):
+    def __init__(self, PyBoard):
+        self.instance = PyBoard
         self.tasks = list()
         self.queueLock = threading.Lock()
         self.taskID = Counter(t=0)
@@ -208,7 +210,7 @@ class TaskScheduler(object):
                 tasks = [x for x in self.tasks if x.timestamp <= now]
             if tasks:
                 for task in tasks:
-                    thread = threading.Thread(target=task.target, args=task.args, kwargs=task.kwargs)
+                    thread = self.PrettyExceptionThread(scd=self, target=task.target, args=task.args, kwargs=task.kwargs)
                     thread.daemon = True
                     thread.start()
                 with self.queueLock:
@@ -249,6 +251,17 @@ class TaskScheduler(object):
         t.daemon = True
         t.start()
         return self
+
+    class PrettyExceptionThread(threading.Thread):
+        def __init__(self, *args, **kwargs):
+            self.scd = kwargs.pop("scd")
+            super(TaskScheduler.PrettyExceptionThread, self).__init__(*args, **kwargs)
+
+        def run(self, *args):
+            try:
+                super(TaskScheduler.PrettyExceptionThread, self).run(*args)
+            except Exception as e:
+                self.scd.instance.log_except(self.name, *sys.exc_info())
 
 # Extension API.
 
@@ -338,12 +351,13 @@ class Extension(object):
             self.instance._dbmods[self.IDENTIFIER][name] = self.DatabaseControllerObject(*(classes + (metadata,)))
 
     def log(self, message, loglev=0):
-        if loglev == 1:
-            print(time.strftime("[%H:%M:%S] \033[33;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))), file=sys.stderr)
-        elif loglev == 2:
-            print(time.strftime("[%H:%M:%S] \033[31;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))), file=sys.stderr)
-        else:
-            print(time.strftime("[%H:%M:%S] [{0}] {1}".format(self.IDENTIFIER, str(message))))
+        with self.instance._loggerLock:
+            if loglev == 1:
+                print(time.strftime("[%H:%M:%S] \033[33;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))), file=sys.stderr)
+            elif loglev == 2:
+                print(time.strftime("[%H:%M:%S] \033[31;1m[{0}] {1}\033[0m".format(self.IDENTIFIER, str(message))), file=sys.stderr)
+            else:
+                print(time.strftime("[%H:%M:%S] [{0}] {1}".format(self.IDENTIFIER, str(message))))
 
     def redirect(self, location, headers=None):
         if not headers:

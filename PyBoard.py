@@ -8,6 +8,7 @@ import mimetypes
 import os
 import re
 import sys
+import threading
 import time
 import traceback
 import urllib
@@ -27,11 +28,12 @@ class PyBoard(object):
             sys.path[0] = os.getcwd()
         self.conf = PyBoardObjects.Configuration()
         self.lang = PyBoardObjects.Language(self.conf["Language"])
+        self._loggerLock = threading.Lock()
         self.log(self.lang["PB_STARTUP"].format(v=self.conf["__version"]))
         self.set_paths()
         self.func = PyBoardFunctions.Functions(self)
         self.modViews = OrderedDict()
-        self.scheduler = PyBoardObjects.TaskScheduler().start()
+        self.scheduler = PyBoardObjects.TaskScheduler(self).start()
         self.bp = PyBoardPages.BasePages(self)
         self.ap = PyBoardPages.Admin(self)
         self.Extensions, self._extm = [], []
@@ -107,16 +109,26 @@ class PyBoard(object):
     LOGLEV_WARN = 1
     LOGLEV_ERROR = 2
 
-    @staticmethod
-    def log(message, loglev=0):
-        if loglev == 1:
-            print(time.strftime("[%H:%M:%S] \033[33;1m[pyboard] {0}\033[0m".format(str(message))), file=sys.stderr)
-        elif loglev == 2:
-            print(time.strftime("[%H:%M:%S] \033[31;1m[pyboard] {0}\033[0m".format(str(message))), file=sys.stderr)
-        elif loglev == 52346:
-            print(time.strftime("[%H:%M:%S] \033[32m[pyboard]\033[0m \033[33m{0}\033[0m".format(str(message))))
-        else:
-            print(time.strftime("[%H:%M:%S] \033[32m[pyboard]\033[0m {0}".format(str(message))))
+    def log(self, message, loglev=0):
+        with self._loggerLock:
+            if loglev == 1:
+                print(time.strftime("[%H:%M:%S] \033[33;1m[pyboard] {0}\033[0m".format(str(message))), file=sys.stderr)
+            elif loglev == 2:
+                print(time.strftime("[%H:%M:%S] \033[31;1m[pyboard] {0}\033[0m".format(str(message))), file=sys.stderr)
+            elif loglev == 52346:
+                print(time.strftime("[%H:%M:%S] \033[32m[pyboard]\033[0m \033[33m{0}\033[0m".format(str(message))))
+            else:
+                print(time.strftime("[%H:%M:%S] \033[32m[pyboard]\033[0m {0}".format(str(message))))
+
+    def log_except(self, thread_name, t, v, b):
+        self.log("*** [SERVER ERROR] ***********************", self.LOGLEV_ERROR)
+        self.log("Exception in thread '{0}':".format(thread_name), self.LOGLEV_ERROR)
+        for line in traceback.format_tb(b):
+            for l in line.split("\n"):
+                if l.strip():
+                    self.log(l, self.LOGLEV_ERROR)
+        self.log(traceback.format_exception_only(t, v)[0].strip(), self.LOGLEV_ERROR)
+        self.log("******************************************", self.LOGLEV_ERROR)
 
     def load_extensions(self):
         self.log(self.lang["PB_EXTENSION_LOAD_START"])

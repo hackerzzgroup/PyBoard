@@ -3,13 +3,17 @@
 # All rights reserved.
 from __future__ import print_function
 import cgi
+from collections import Counter
 import imp
 import mimetypes
 import os
 import re
 import sys
+import threading
 import time
 import urllib
+
+# Configuration classes.
 
 class Configuration(object):
     """Stores PyBoard's configuration values."""
@@ -98,6 +102,8 @@ class Language(object):
             except:
                 return "KEY_MISSING:{0}".format(item)
 
+# Events API.
+
 class Event(object):
     def __init__(self, eventName, cancellable=True, **kwargs):
         for i in kwargs:
@@ -123,6 +129,129 @@ class Event(object):
             super(Event.Cancel, self).__init__(message)
             self.cancelMessage = message
 
+# Classes related to deferred calls.
+
+class DeferredTask(object):
+    """
+    Storage for a deferred task.
+    """
+    def __init__(self, timestamp, target, args, kwargs, taskid):
+        if not callable(target):
+            raise TypeError("target must be callable")
+        self.timestamp = float(timestamp) # should be sufficient for type-checking
+        self.target = target
+        self.args = args
+        self.kwargs = kwargs
+        self.taskID = taskid
+
+class TaskScheduler(object):
+    """
+    A scheduler for deferred tasks.
+    """
+    def __init__(self):
+        self.tasks = list()
+        self.queueLock = threading.Lock()
+        self.taskID = Counter(t=0)
+
+    def removeDups(self, list1, list2):
+        """
+        Removes timestamped items in list1 from list2.
+        note: originally written by @SlowpokeTail -- which is why it's the most
+        commented method in this file.
+        """
+        result = []
+        i = 0
+        for item in list2:
+            if i >= len(list1):
+                # Just append the whole remaining list to the result since we've
+                # run out of possible duplicates.
+                result.append(item)
+                continue
+            while True:
+                if list1[i].timestamp < item.timestamp:
+                    # The current item in list1 is older than the current item
+                    # from list2, That means we can ignore it and jump to the next
+                    # by incrementing i.
+                    i += 1
+                    continue
+                elif list1[i].timestamp == item.timestamp:
+                    # If the two items share the same time, they *could* be the
+                    # same object. Let's check that.
+                    if list1[i] is not item:
+                        # The two items are not the same, therefore we can append
+                        # it to the resulting list, and continue with the next item.
+                        result.append(item)
+                        i += 1
+                        break
+                    else:
+                        # The two items are the same. We skip them and continue
+                        # with the next items from both lists.
+                        i += 1
+                        break
+                else:
+                    # The current item in list1 is younger than the current item
+                    # from list2. We can savely add the item from list2 to the
+                    # result and continue with the next item from list2.
+                    result.append(item)
+                    break
+        return result
+
+    def getTaskID(self):
+        self.taskID["t"] += 1
+        return self.taskID["t"]
+
+    def runLoop(self):
+        """Should be run in a thread"""
+        while 1:
+            now = time.time()
+            with self.queueLock:
+                tasks = [x for x in self.tasks if x.timestamp <= now]
+            if tasks:
+                for task in tasks:
+                    thread = threading.Thread(target=task.target, args=task.args, kwargs=task.kwargs)
+                    thread.daemon = True
+                    thread.start()
+                with self.queueLock:
+                    #self.tasks = self.tasks[len(tasks):]
+                    self.tasks = self.removeDups(tasks, self.tasks)
+            time.sleep(0.1)
+
+    def scheduleTask(self, task):
+        if not isinstance(task, DeferredTask):
+            raise TypeError("Must pass me a DeferredTask.")
+        with self.queueLock:
+            self.tasks.append(task)
+            self.tasks = sorted(self.tasks, key=lambda x: x.timestamp)
+        return task.taskID
+
+    def scheduleCall(self, when, target, args=tuple(), kwargs=None):
+        if when < time.time():
+            # raise ValueError("Cannot schedule a task for before the current time.")
+            raise ValueError("What?")
+        if not kwargs:
+            kwargs = {}
+        task = DeferredTask(when, target, args, kwargs, self.getTaskID())
+        self.scheduleTask(task)
+        return task.taskID
+
+    def delayCall(self, delay, target, args=tuple(), kwargs=None):
+        if delay < 0:
+            # raise ValueError("Cannot schedule a task for before the current time.")
+            raise ValueError("What?")
+        if not kwargs:
+            kwargs = {}
+        task = DeferredTask(time.time() + delay, target, args, kwargs, self.getTaskID())
+        self.scheduleTask(task)
+        return task.taskID
+
+    def start(self):
+        t = threading.Thread(target=self.runLoop)
+        t.daemon = True
+        t.start()
+        return self
+
+# Extension API.
+
 class Extension(object):
     IDENTIFIER = "net.pyboard.BaseExtension"
     REQUIRES_DATA_FOLDER = False
@@ -132,6 +261,7 @@ class Extension(object):
     LOGLEV_ERROR = 2
     def __init__(self, PyBoard):
         self.instance = PyBoard
+        self.scheduler = PyBoard.scheduler
         if self.REQUIRES_DATA_FOLDER:
             self._prepareDataFolder()
         if self.REQUIRES_CONFIG_FILE:
@@ -291,6 +421,8 @@ class Extension(object):
         def head(self, request):
             return self.generateError("400 Bad Request", etext=self.instance.lang["ERR_CANT_HEAD"])
 
+# Web objects.
+
 class Request(object):
     def __init__(self, instance, environ, protocol=None, origin=None):
         self.instance = instance
@@ -389,6 +521,8 @@ class Response(object):
         return "<PyBoardResponse: {0}, {1} headers>".format(self.status, len(self.headers))
 
     __str__ = __repr__
+
+# Read-only data objects.
 
 class Thread(object):
     """Represents a thread."""

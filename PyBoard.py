@@ -31,6 +31,7 @@ class PyBoard(object):
         self.set_paths()
         self.func = PyBoardFunctions.Functions(self)
         self.modViews = OrderedDict()
+        self.scheduler = PyBoardObjects.TaskScheduler().start()
         self.bp = PyBoardPages.BasePages(self)
         self.ap = PyBoardPages.Admin(self)
         self.Extensions, self._extm = [], []

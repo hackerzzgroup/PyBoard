@@ -20,6 +20,7 @@ class main(PyBoardObjects.Extension):
         self.addPage("/example/redirect", self.demoRedirect)
         self.addPage("/example/error", self.demoError)
         self.addPage("/example/broken", self.brokenHandler)
+        self.addPage("/example/schedule", self.demoScheduler)
         self.addModView("h", "h h", self.modViewDemo)
         self.hook("PBApplicationLady", self.eventHook)
 
@@ -90,3 +91,12 @@ class main(PyBoardObjects.Extension):
         return PyBoardObjects.Response(s="200 OK", h={
             "Content-Type": "text/plain",
         }, r=str(b)) # b isn't defined
+
+    def demoScheduler(self, request):
+        """
+        This prints a line to the log ~5 seconds after the page is visited.
+        """
+        self.scheduler.delayCall(5, self.log, ("{0} made a request 5 seconds ago.".format(request.origin),))
+        return PyBoardObjects.Response(s="200 OK", h={
+            "Content-Type": "text/plain",
+        }, r="h")

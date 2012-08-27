@@ -443,6 +443,7 @@ class Admin(PyBoardObjects.Extension):
                     "sid": i,
                     "user": v[0],
                     "self": v[0] == request.user,
+                    "this_session": i == request.sid,
                     "can_close": uobj.has_permission("users.close_session.{0}".format(v[0])),
                     "last": time.strftime("%d/%m/%y (%a) %H:%M:%S", time.localtime(v[1])),
                 } for i, v in self.instance.modSessions.items()]

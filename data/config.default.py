@@ -90,6 +90,7 @@ DatabaseEngine = "SQLite3"
 TopbarGroups = [
     ("b", "g"), ("feels", "h"), ("test",)
 ]
+MaxLoginAttempts = 5
 # most of these are per board configurable, see docs for a real list
 HideSage = False
 DoubleTrips = True

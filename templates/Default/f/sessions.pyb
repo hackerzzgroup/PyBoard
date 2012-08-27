@@ -1,5 +1,5 @@
 <h1>{{OPEN_SESSIONS}}</h1>
-<h5><a href="/admin?tools">{{BACK}}</a></h5>
+<h5><a href="/admin?tools">{{RETURN}}</a></h5>
 <table class="mod_table">
 	<tr class="header">
 		<td>{{USERNAME}}</td>
@@ -8,7 +8,7 @@
 		<td class="blank"></td>
 	</tr>
 	{{#sessions}}
-	<tr {{#self}}class="highlight"{{/self}}>
+	<tr {{#this_session}}class="highlight"{{/this_session}}>
 		<td>{{#self}}<em>{{/self}}{{user}}{{#self}}</em>{{/self}}</td>
 		<td>{{sid}}</td>
 		<td>{{last}}</td>

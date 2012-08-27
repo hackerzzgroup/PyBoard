@@ -4,6 +4,7 @@
 		<input type="hidden" name="action" value="ban_poster">
 		<input class="text" type="text" name="address" placeholder="{{ADDRESS}}">
 		<input class="text" type="text" name="expires" placeholder="{{EXPIRES}}">
+		<textarea class="text area" type="text" name="comment" placeholder="{{REASON}}">{{NO_REASON}}</textarea>
 		<textarea class="text area" type="text" name="comment" placeholder="{{COMMENT}}"></textarea>
 		<input class="b full" type="submit" name="submit" value="{{SUBMIT}}">
 	</form>

@@ -447,7 +447,7 @@ class Request(object):
     def __init__(self, instance, environ, protocol=None, origin=None):
         self.instance = instance
         self.environ = environ;
-        self._authenticated, self._user = None, None
+        self._authenticated, self._user, self._sid = None, None, None
         self.url = urllib.unquote(environ["PATH_INFO"]);
         self.query = environ["QUERY_STRING"];
         self.query_dict = {}
@@ -490,11 +490,18 @@ class Request(object):
             self.__performAuth__()
         return self._user
 
+    @property
+    def sid(self):
+        if self._sid == None:
+            self.__performAuth__()
+        return self._sid
+
     def __performAuth__(self):
         if "pfAuthToken" in self.cookies:
             self._authenticated = self.instance.func.verifyLogin(self.cookies["pfAuthToken"], self.origin)
             if self._authenticated:
                 self._user = self.instance.modSessions[self.cookies["pfAuthToken"].split("|")[0]][0]
+                self._sid = self.cookies["pfAuthToken"].split("|")[0]
         else:
             self._authenticated, self._user = 0, ""
 

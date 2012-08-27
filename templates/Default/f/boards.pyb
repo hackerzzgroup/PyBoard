@@ -4,10 +4,10 @@
 {{#has_boards}}
 <table class="mod_table">
 	<tr class="header">
-		<th class="blank"></td>
+		<td class="blank"></td>
 		<td>{{NAME}}</td>
-		<td class="right_align min">{{ACTIVE_POSTS}}</th>
-		<td class="right_align min">{{ACTIVE_THREADS}}</th>
+		<td class="right_align min">{{ACTIVE_POSTS}}</td>
+		<td class="right_align min">{{ACTIVE_THREADS}}</td>
 	</tr>
 	{{#boards}}
 	<tr>

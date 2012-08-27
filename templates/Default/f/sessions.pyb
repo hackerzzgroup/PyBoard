@@ -1,0 +1,18 @@
+<h1>{{OPEN_SESSIONS}}</h1>
+<h5><a href="/admin?tools">{{BACK}}</a></h5>
+<table class="mod_table">
+	<tr class="header">
+		<td>{{USERNAME}}</td>
+		<td>{{SID}}</td>
+		<td>{{LAST_SEEN}}</td>
+		<td class="blank"></td>
+	</tr>
+	{{#sessions}}
+	<tr {{#self}}class="highlight"{{/self}}>
+		<td>{{#self}}<em>{{/self}}{{user}}{{#self}}</em>{{/self}}</td>
+		<td>{{sid}}</td>
+		<td>{{last}}</td>
+		<td class="right_align min">{{#can_close}}<a href="?tools&amp;close_session={{sid}}">{{CLOSE}}</a>{{/can_close}}</td>
+	</tr>
+	{{/sessions}}
+</table>

@@ -22,4 +22,7 @@
 {{#can_repages}}
 <a class="b full" href="/mod_action?reload_core">Reload core pages</a><br>
 {{/can_repages}}
+{{#can_view_sessions}}
+<a class="b full" href="?tools&amp;sessions">Sessions</a><br>
+{{/can_view_sessions}}
 </div>

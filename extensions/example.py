@@ -95,6 +95,8 @@ class main(PyBoardObjects.Extension):
     def demoScheduler(self, request):
         """
         This prints a line to the log ~5 seconds after the page is visited.
+        NOTE: Methods called by the scheduling API will run in their own thread.
+        Please be wary of thread-safety when using this API.
         """
         self.scheduler.delayCall(5, self.log, ("{0} made a request 5 seconds ago.".format(request.origin),))
         return PyBoardObjects.Response(s="200 OK", h={

@@ -129,6 +129,9 @@ button.generic {
 	padding:0.5em;
 	border:1px solid gray;
 }
+.mod_table tr.highlight {
+	background-color:rgb(255,255,204)!important;
+}
 .mod_table .blank {
 	visibility:hidden;
 }

@@ -427,6 +427,26 @@ class Admin(PyBoardObjects.Extension):
     
     def fAdvanced(self, request):
         uobj = self.instance.masterDB.users[request.user]
+        if "&" in request.query:
+            if "close_session" in request.query_dict:
+                k = request.query_dict.get("close_session", "")
+                if k in self.instance.modSessions:
+                    if uobj.has_permission("users.close_session.{0}".format(self.instance.modSessions[k][0])):
+                        del self.instance.modSessions[k]
+                        return self.generateError("200 OK", heading=self.instance.lang["NOTICE"], etext=self.instance.lang["SESSION_CLOSED"], return_to="/admin?tools&sessions")
+                    else:
+                        return self.generateError("403 Forbidden", etext=self.instance.lang["ERR_PERMISSION_DENIED"], return_to="/admin?tools&sessions")
+                else:
+                    return self.generateError("200 OK", etext=self.instance.lang["SESSION_NOT_FOUND"], return_to="/admin?tools&sessions")
+            elif request.query.split("&")[1] == "sessions":
+                sess = [{
+                    "sid": i,
+                    "user": v[0],
+                    "self": v[0] == request.user,
+                    "can_close": uobj.has_permission("users.close_session.{0}".format(v[0])),
+                    "last": time.strftime("%d/%m/%y (%a) %H:%M:%S", time.localtime(v[1])),
+                } for i, v in self.instance.modSessions.items()]
+                return self.instance.func.page_format(template="f/sessions.pyb", v={"sessions": sess})
         return self.instance.func.page_format(template="f/tests.pyb", v={
             "can_reloadconfig": uobj.has_permission("debug.reload_config"),
             "can_flushcache": uobj.has_permission("debug.flush_cache"),
@@ -434,6 +454,7 @@ class Admin(PyBoardObjects.Extension):
             "can_rebuild": uobj.has_permission("debug.rebuild_all"),
             "can_relang": uobj.has_permission("debug.reload_lang"),
             "can_repages": uobj.has_permission("debug.reload_core"),
+            "can_view_sessions": uobj.has_permission("users.view_sessions"),
         })
 
     class fMain(PyBoardObjects.Extension.RequestHandler):
@@ -448,9 +469,13 @@ class Admin(PyBoardObjects.Extension):
                 if qstart in self.instance.modViews:
                     uobj = self.instance.masterDB.users[request.user]
                     if self.instance.masterDB.users[request.user].has_permission("admin.section.{0}".format(qstart)):
-                        return PyBoardObjects.Response(s="200 OK", h={"Content-Type": "text/html"}, r=self.instance.func.page_format(template="f/base.pyb", v={"sections": [
-                            {"location": x, "name": self.instance.modViews[x]["name"], "selected": x == qstart} for x in self.instance.modViews if uobj.has_permission("admin.section.{0}".format(x))
-                        ], "content": self.instance.modViews[qstart]["call"](request)}))
+                        cnt = self.instance.modViews[qstart]["call"](request)
+                        if isinstance(cnt, PyBoardObjects.Response):
+                            return cnt
+                        else:
+                            return PyBoardObjects.Response(s="200 OK", h={"Content-Type": "text/html"}, r=self.instance.func.page_format(template="f/base.pyb", v={"sections": [
+                                {"location": x, "name": self.instance.modViews[x]["name"], "selected": x == qstart} for x in self.instance.modViews if uobj.has_permission("admin.section.{0}".format(x))
+                            ], "content": cnt}))
                     else:
                         return self.generateError("401 Unauthorized", etext=self.instance.lang["ERR_403"], return_to="/admin")
                 else:

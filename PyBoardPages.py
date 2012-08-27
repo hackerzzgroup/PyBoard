@@ -614,11 +614,11 @@ class Admin(PyBoardObjects.Extension):
                         return self.generateError("403 Forbidden", etext=self.instance.lang["ERR_PERMISSION_DENIED"], return_to="/admin")
                 if request.query == "reload_exts":
                     if self.instance.masterDB.users[request.user].has_permission("debug.reload_exts"):
-                        for i in self.instance.ext_identifiers:
-                            f = sys.modules[self.instance.extension_by_id(i).__module__].__file__
-                            print f
+                        for i in self.instance.ext_identifiers[:-2]:
+                            f = sys.modules[self.instance.extension_by_id(i).__module__].__file__.split("/")[-1][:-1]
                             self.instance.unload_extension(i)
-                        return self.generateError("200 OK", heading="OK", etext="Reloaded ", return_to="/admin?tests")
+                            self.instance.load_extension(f)
+                        return self.generateError("200 OK", heading="OK", etext="Reloaded all extensions.", return_to="/admin?tests")
                     else:
                         return self.generateError("403 Forbidden", etext=self.instance.lang["ERR_PERMISSION_DENIED"], return_to="/admin")
                 if request.query == "flush_cache":

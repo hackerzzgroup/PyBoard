@@ -90,6 +90,11 @@ DatabaseEngine = "SQLite3"
 TopbarGroups = [
     ("b", "g"), ("feels", "h"), ("test",)
 ]
+TopbarExternal = [
+    ("irc", "ircs://opsimathia.datnode.net:6697/hacking"),
+    ("admin", "/admin"),
+    ("home", "/"),
+]
 MaxLoginAttempts = 5
 # most of these are per board configurable, see docs for a real list
 HideSage = False

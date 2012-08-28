@@ -87,6 +87,10 @@ class Global(object):
                 temp = a.read()
             result = Renderer().render(temp, {
                 "groups": bl,
+                "rb_items": [{
+                    "name": v[0],
+                    "loc": v[1],
+                } for v in self.instance.conf["TopbarExternal"]]
             })
             if not mod:
                 self.instance.log(self.instance.lang["DB_UPDATING_TOPBAR"])

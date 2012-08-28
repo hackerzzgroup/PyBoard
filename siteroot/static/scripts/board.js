@@ -1,6 +1,16 @@
 modbars = ["stee", "jew", "homu", "line"]
 styles = ["classic", "dark"]
 
+function __getSwitchbox(title) {
+    a = document.createElement("div");
+    a.className = "switchbox";
+    b = document.createElement("span");
+    b.className = "selected header";
+    b.innerHTML = title;
+    a.appendChild(b);
+    return a;
+}
+
 function highlight(id) {
     commententry = document.getElementsByName('body')[0]
     if (commententry.value.trim() != "") {
@@ -41,28 +51,23 @@ function expImage(event) {
     }
 }
 
-function getMBSwitcherFor(id) {
+function getStyleSwitcherFor(id) {
     a = document.createElement("a");
     a._modbar = String(id);
     a.href = "javascript:;";
     a.className = "boardlink";
-    a.style.color = "rgb(213,213,213)"
-    a.innerHTML = id + " ";
-    a.onclick = function(e) {
-        window.currentModbar = id;
-        localStorage.setItem("modbarStyle", id);
-        document.getElementsByClassName("modbar")[0].className = "modbar " + id;
-    }
+    a.innerHTML = id;
+    a.setAttribute("onclick", "setStyle('"+ id +"')");
     return a;
 }
 
-function getStyleSwitcherFor(id) {
+function getMBSwitcherFor(id) {
     a = document.createElement("a");
-    a._style = String(id);
+    a._mb = String(id);
     a.href = "javascript:;";
     a.className = "boardlink";
-    a.setAttribute("onclick", "setStyle('"+ id +"')");
-    a.innerHTML = id
+    a.innerHTML = id;
+    a.setAttribute("onclick", "setMB('"+ id +"')");
     return a;
 }
 
@@ -74,6 +79,12 @@ function setStyle(id) {
     document.getElementById("css_form").href = "/static/style/" + id + "/form.css"
 }
 
+function setMB(id) {
+    window.currentModbar = id;
+    localStorage.setItem("modbarStyle", id);
+    document.getElementsByClassName("modbar")[0].className = "modbar " + id;
+}
+
 function initialiseExpander() {
     ar = document.getElementsByClassName("img_cont");
     for (i = 0; i < ar.length; i++) {
@@ -81,6 +92,35 @@ function initialiseExpander() {
         ar[i]._fullURL = ar[i].href;
         ar[i].href = "javascript:;";
         ar[i].addEventListener('click', expImage, false);
+    }
+}
+
+function showSwitcher(id) {
+    didHide = 0;
+    e = document.getElementById(id)
+    boxes = document.getElementsByClassName("switchbox");
+    for (i = 0; i < boxes.length; i++) {
+        if (boxes[i].id == e.id && e.style.display !== "none") {
+            didHide = 1;
+        }
+        boxes[i].style.display = "none";
+    }
+    if (!didHide) {
+        e.style.display = "inline-block";
+    }
+}
+
+function showModbar() {
+    didHide = 0;
+    boxes = document.getElementsByClassName("switchbox");
+    for (i = 0; i < boxes.length; i++) {
+        if (boxes[i].id === "modbar_s" && boxes[i].style.display !== "none") {
+            didHide = 1;
+        }
+        boxes[i].style.display = "none";
+    }
+    if (!didHide) {
+        document.getElementById("modbar_s").style.display = "inline-block";
     }
 }
 
@@ -98,10 +138,27 @@ function initialiseModbar() {
             }
         }
     }
-    document.getElementById("topbar_right_content").innerHTML = "modbar: " + document.getElementById("topbar_right_content").innerHTML;
+    //document.getElementById("topbar_right_content").innerHTML = "modbar: " + document.getElementById("topbar_right_content").innerHTML;
+    //while (modbars.length > 0) {
+    //    document.getElementById("topbar_right_content").insertBefore(getMBSwitcherFor(modbars.pop()), document.getElementById("topbar_right_content").children[0]);
+    //}
+    switcher = __getSwitchbox("Modbar style:");
+    switcher.id = "modbar_s"
     while (modbars.length > 0) {
-        document.getElementById("topbar_right_content").insertBefore(getMBSwitcherFor(modbars.pop()), document.getElementById("topbar_right_content").children[0]);
+        switcher.appendChild(getMBSwitcherFor(modbars.pop()));
     }
+    switcher.style.display = "none";
+    document.body.appendChild(switcher);
+    sp = document.createElement("span");
+    sp.innerHTML = " ["
+    toggle = document.createElement("a");
+    toggle.href = "javascript:;";
+    toggle.className = "boardlink";
+    toggle.innerHTML = "modbar";
+    toggle.setAttribute("onclick", "showSwitcher('modbar_s');");
+    sp.appendChild(toggle);
+    sp.innerHTML += "]";
+    document.getElementById("topbar_right_content").appendChild(sp);
 }
 
 function initialisePostForm() {
@@ -173,18 +230,23 @@ function initialiseStyles() {
             }
         }
     }
-    sp = document.createElement("span");
-    sp.innerHTML = " themes: ["
-    if (styles.length > 1) {
-        while (styles.length > 0) {
-            sp.appendChild(getStyleSwitcherFor(styles.pop()));
-            if (styles.length >= 1) {
-                sp.innerHTML += " / ";
-            }
-        }
-        sp.innerHTML += "]"
-        document.getElementById("topbar_right_content").appendChild(sp);
+    switcher = __getSwitchbox("Board style:");
+    switcher.id = "styles_s"
+    while (styles.length > 0) {
+        switcher.appendChild(getStyleSwitcherFor(styles.pop()));
     }
+    switcher.style.display = "none";
+    document.body.appendChild(switcher);
+    sp = document.createElement("span");
+    sp.innerHTML = " ["
+    toggle = document.createElement("a");
+    toggle.href = "javascript:;";
+    toggle.className = "boardlink";
+    toggle.innerHTML = "themes";
+    toggle.setAttribute("onclick", "showSwitcher('styles_s');");
+    sp.appendChild(toggle);
+    sp.innerHTML += "]";
+    document.getElementById("topbar_right_content").appendChild(sp);
 }
 
 onloadCallbacks = [initialiseExpander];

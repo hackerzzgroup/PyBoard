@@ -5,6 +5,8 @@
     {{/groups}}
     </div>
     <div id="topbar_right_content" class="topbar_inner">
-        [<a class="boardlink" href="/admin" title="Administration">admin</a>] [<a class="boardlink" href="/" title="Home">home</a>]
+        {{#rb_items}}
+        [<a class="boardlink" href="{{loc}}">{{name}}</a>]
+        {{/rb_items}}
     </div>
 </div>

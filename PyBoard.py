@@ -262,6 +262,7 @@ class PyBoard(object):
                 self.unload_extension(i)
         if self.conf["SessionPersistence"]:
             with open("{0}/.pbsession".format(self.workd), "w+") as mf:
+                os.chmod("{0}/.pbsession".format(self.workd), 384)
                 mf.write("__pfsessionfile{0}__\n".format(self.conf["__version"]))
                 if self.modSessions:
                     for i in self.modSessions:
